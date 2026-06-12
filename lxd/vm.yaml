@@ -1,0 +1,6 @@
+config:
+  limits.cpu: "2"
+  limits.memory: "2048MiB"
+  boot.autostart: "true"
+# devices: -> use defaults for now
+description: "LXD Ubuntu VMs configuration"

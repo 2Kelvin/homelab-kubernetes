@@ -1,0 +1,74 @@
+# ==============================================================================
+# LXD VIRTUAL MACHINE BLUEPRINT
+# Use case: Standard Production/Development Linux Workspace
+# Deployment: lxc launch ubuntu:26.04 dev-vm --vm < base-vm.yaml
+# ==============================================================================
+
+# Human-readable label for documentation and team audits
+description: "Production-ready Ubuntu 26.04 VM blueprint with optimized resource baselines."
+
+# ------------------------------------------------------------------------------
+# 1. HARDWARE CONSTRAINTS AND RESOURCE CONTROLS
+# ------------------------------------------------------------------------------
+config:
+  # Allocates exactly 2 execution threads/cores to this guest
+  limits.cpu: "2"
+  
+  # Sets the absolute physical RAM ceiling (Dynamic adjustment enabled inside guest)
+  limits.memory: "4GiB"
+  
+  # Ensures the VM securely restarts if the underlying host machine reboots
+  boot.autostart: "true"
+  
+  # Prioritizes host resources. Higher numbers get priority if host is overloaded (1-10)
+  boot.autostart.priority: "5"
+
+  # Secure Boot configuration (Set to false if booting an unsigned custom OS image)
+  security.secureboot: "true"
+
+  # ----------------------------------------------------------------------------
+  # 2. INTERNAL GUEST OS PROVISIONING (Cloud-Init Block)
+  # ----------------------------------------------------------------------------
+  # Note: '|' tells YAML to interpret the following indented lines as raw text block
+  user.user-data: |
+    #cloud-config
+    
+    # Update all security repositories on the very first boot lifecycle
+    package_update: true
+    package_upgrade: true
+    
+    # Automatically install essential runtime and networking tools
+    packages:
+      - curl
+      - git
+      - htop
+      - ufw
+
+    # Provision administrative system users and embed security profiles
+    users:
+      - name: ubuntu
+        groups: sudo, adm
+        shell: /bin/bash
+        sudo: ['ALL=(ALL) NOPASSWD:ALL']
+        lock_passwd: true # Blocks standard password spraying attacks entirely
+        
+        # Inject your public host machine keys here to bypass passwords instantly
+        ssh_authorized_keys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK...your_key_string... user@host
+
+# ------------------------------------------------------------------------------
+# 3. STORAGE DISKS AND VIRTUAL NETWORK INTERFACES
+# ------------------------------------------------------------------------------
+devices:
+  # Main root system volume deployment rules
+  root:
+    type: disk
+    pool: default              # Maps to your target LXD storage pool (zfs, btrfs, dir, etc.)
+    path: /                    # Mounting target for the operating system layout
+    size: 40GiB                # Overrides the small fallback stock sizes (e.g., 10GB)
+
+  # Network mapping rules (Direct DHCP provisioning via the bridge)
+  eth0:
+    type: nic
+    network: lxdbr0            # Default built-in virtual bridge interface of the host
+    name: eth0                 # Logical network interface adapter ID inside the guest OS
