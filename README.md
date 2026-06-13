@@ -1,6 +1,8 @@
 # Kubernetes Homelab
 
-# Setup (on Arch Linux)
+# Setup (Arch Linux)
+
+Similar setup could be achieved on other distros. For Ubuntu, setup using `LXD`.
 
 Install `incus`
 
@@ -8,7 +10,7 @@ Install `incus`
 sudo pacman -Syu incus
 ```
 
-Setting up incus and starting the its service
+User setup and `incus` service startup
 
 ```bash
 # give user root privileges to run incus automatically
@@ -19,5 +21,7 @@ newgrp incus-admin
 # running the service/socket
 sudo systemctl enable --now incus.socket
 sudo systemctl enable --now incus.service
-incus admin init --minimal
+
+# accept all the defaults when setting this up or use the incus-preseed.yaml file
+incus admin init
 ```
