@@ -25,3 +25,12 @@ sudo systemctl enable --now incus.service
 # accept all the defaults when setting this up or use the incus-preseed.yaml file
 incus admin init
 ```
+## Fixing Setup Errors
+- **Error**: Failed instance creation: Failed creating instance record: Failed initializing instance: System doesn't have a functional idmap setup.
+
+    Fix:
+    ```bash
+    # allocating system root process slots for incus instances (system containers & VMs)
+    echo "root:1000000:1000000000" | sudo tee -a /etc/subuid /etc/subgid
+    sudo systemctl restart incus-daemon.service
+    ```
