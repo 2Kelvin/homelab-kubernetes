@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-website-deployment # all pods derive their names from this, then replicaset hash and unique characters for each pod
+spec: # deployment specification
+  replicas: 5
+  selector:
+    matchLabels:
+      role: frontend # should match template's metadata label
+  template: # instructions on how to create pods
+    metadata:
+      labels:
+        role: frontend
+    spec: # each pod specifications
+      containers:
+        - name: nginx-website-container # specific container name in the pod
+          image: rocketman02/mini_react_web:v1.3
+          resources: # setting cpu & ram limits for each container
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80

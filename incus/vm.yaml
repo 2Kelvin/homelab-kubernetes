@@ -1,0 +1,11 @@
+config:
+  boot.autostart: "true"
+  limits.cpu: "2"
+  limits.memory: "2048MiB"
+devices:
+  root:
+    path: / # incus instance root
+    pool: default
+    size: "15GiB"
+    type: disk
+description: "Incus Ubuntu 26.04LTS VM configuration"
