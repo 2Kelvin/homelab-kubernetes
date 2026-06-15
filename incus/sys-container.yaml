@@ -8,8 +8,8 @@ config:
   linux.kernel_modules: overlay,nf_conntrack,br_netfilter,ip_tables,ip_vs
 devices:
   root:
-    path: / # incus instance root
-    pool: default # incus profile default
     type: disk
-    size: "12GiB"
+    pool: default
+    path: / # incus instance root
+    size: "15GiB"
 description: "Incus Ubuntu system containers configuration"
