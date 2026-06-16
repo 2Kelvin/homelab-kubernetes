@@ -66,12 +66,12 @@ curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -s - \
   --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule
 ```
 
-      - `ip addr show incusbr0 | grep "inet " | awk '{print $2}' | cut -d/ -f1` fetches my **incus bridged network** IP labelled as `incusbr0`.
-      - `K3S_KUBECONFIG_MODE="644"` gives `kubectl` admin priviliges; not having to type _sudo kubectl_ all the time to manage the K3s cluster.
-      - `bind-address` specifically attaches the **incusbr0** IP to the control plane; instead of letting my actual PC IP address from the router get attached to the control plane, making it impossible for the incus node to talk to the control plane and vice versa.
-      - `advertise-address` hands the incus node the **incusbr0** IP to communicate to the control plane.
-      - `node-ip` is for kubelet and k8s to know which network to look at; points to **incusbr0** network.
-      - `--node-taint node-role.kubernetes.io/control-plane=true:NoSchedule` makes my arch linux (control plane) not accept any pods/deployments; it's strictly a control plane. All deployments should be assigned to the incus node. It only accepts essential control plane addons, like CoreDNS/network pods.
+- `ip addr show incusbr0 | grep "inet " | awk '{print $2}' | cut -d/ -f1` fetches my **incus bridged network** IP labelled as `incusbr0`.
+- `K3S_KUBECONFIG_MODE="644"` gives `kubectl` admin priviliges; not having to type _sudo kubectl_ all the time to manage the K3s cluster.
+- `bind-address` specifically attaches the **incusbr0** IP to the control plane; instead of letting my actual PC IP address from the router get attached to the control plane, making it impossible for the incus node to talk to the control plane and vice versa.
+- `advertise-address` hands the incus node the **incusbr0** IP to communicate to the control plane.
+- `node-ip` is for kubelet and k8s to know which network to look at; points to **incusbr0** network.
+- `--node-taint node-role.kubernetes.io/control-plane=true:NoSchedule` makes my arch linux (control plane) not accept any pods/deployments; it's strictly a control plane. All deployments should be assigned to the incus node. It only accepts essential control plane addons, like CoreDNS/network pods.
 
 Confirm `K3s server` installation was successful:
 
