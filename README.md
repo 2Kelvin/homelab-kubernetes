@@ -38,9 +38,7 @@ incus launch images:ubuntu/26.04/cloud node-vm < incus/vm.yaml
 
 ### Install `K3s` and Setup a Kubernetes Cluster
 
-**IMPORTANT**: Disable swap memory.
-
-- Since am using my personal PC for the cluster, I chose not to disable Arch Linux's Zram Swap to avoid system performance hits.
+It's important to disable swap memory when running a Kubernetes cluster, but since am using my personal PC, I chose not to disable Arch Linux's Zram Swap to avoid system performance hits.
 
 #### K3s Server Setup (Control Plane)
 
@@ -61,7 +59,11 @@ INCUS_IP=$(ip addr show incusbr0 | grep "inet " | awk '{print $2}' | cut -d/ -f1
 Then ran this in my Control Plane/K3s Server (Arch PC):
 
 ```bash
-curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -s - --bind-address="$INCUS_IP" --advertise-address="$INCUS_IP" --node-ip="$INCUS_IP" --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule
+curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -s - \
+  --bind-address="$INCUS_IP" \
+  --advertise-address="$INCUS_IP" \
+  --node-ip="$INCUS_IP" \
+  --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule
 ```
 
 Arguments explanations:
