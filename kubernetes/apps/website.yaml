@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-website-deployment # all pods derive their names from this, then replicaset hash and unique characters for each pod
+  name: website-deployment # all pods derive their names from this, then replicaset hash and unique characters for each pod
 spec: # deployment specification
-  replicas: 5
+  replicas: 4
   selector:
     matchLabels:
       role: frontend # should match template's metadata label
@@ -11,11 +11,11 @@ spec: # deployment specification
     metadata:
       labels:
         role: frontend
-    spec: # each pod specifications
+    spec: # pod specifications
       containers:
-        - name: nginx-website-container # specific container name in the pod
+        - name: nginx-container # specific container name in the pod
           image: rocketman02/mini_react_web:v1.3
-          resources: # setting cpu & ram limits for each container
+          resources: # cpu & ram limits for each container
             requests:
               memory: "128Mi"
               cpu: "100m"
@@ -24,3 +24,18 @@ spec: # deployment specification
               cpu: "500m"
           ports:
             - containerPort: 80
+
+---
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: website-service
+spec:
+  type: NodePort
+  selector:
+    role: frontend # targetting all pods with this label
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30011

@@ -8,4 +8,4 @@ devices:
     pool: default
     size: "15GiB"
     type: disk
-description: "Incus Ubuntu 26.04LTS VM configuration"
+description: "K8s Node: Ubuntu 26.04LTS VM configuration"

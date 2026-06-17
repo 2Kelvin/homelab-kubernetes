@@ -1,0 +1,15 @@
+config:
+  boot.autostart: "true"
+  limits.cpu: "1"
+  limits.memory: "512MiB"
+devices:
+  root:
+    path: /
+    pool: default
+    size: "8GiB"
+    type: disk
+cloud-init.user-data: |
+  package_upgrade: true
+  packages:
+    - nginx
+description: "K8s Nginx Load Balancer: Ubuntu 26.04LTS VM configuration"
