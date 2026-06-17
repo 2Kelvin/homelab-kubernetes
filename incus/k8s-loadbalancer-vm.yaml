@@ -2,14 +2,17 @@ config:
   boot.autostart: "true"
   limits.cpu: "1"
   limits.memory: "512MiB"
+  cloud-init.user-data: |
+    #!/bin/bash
+    apt update
+    apt install -y nginx
+    systemctl enable --now nginx
+
 devices:
   root:
     path: /
     pool: default
     size: "8GiB"
     type: disk
-cloud-init.user-data: |
-  package_upgrade: true
-  packages:
-    - nginx
+
 description: "K8s Nginx Load Balancer: Ubuntu 26.04LTS VM configuration"

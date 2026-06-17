@@ -111,3 +111,10 @@ It's important to **disable swap memory** when running a Kubernetes cluster, but
 
 ---
 
+## K3s Cluster `Load Balancer` Setup (`Nginx`)
+
+1. Creating the Load Balancer VM with the necessary compute resources and `Nginx` installed:
+
+```bash
+incus launch images:ubuntu/26.04/cloud load-balancer --vm < incus/k8s-loadbalancer-vm.yaml
+```
