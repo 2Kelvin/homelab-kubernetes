@@ -127,5 +127,30 @@ kubectl delete -f kubernetes/apps
 
 Here's a list of all the apps I'm currently running in my cluster:
 
-- My personal website
-- Headlamp (K8s UI Dashboard)
+1. Headlamp (K8s UI Dashboard)
+2. My personal website
+
+### Installing `Headlamp` (Kubernetes UI)
+
+**NOTE** The `ClusterRoleBinding` has been given full admin privileges in the `kube-system`. You can change these permissions to your liking if you want.
+
+1. Run all the cluster apps using `kubectl apply -f kubernetes/apps`. This creates the headlamp pod in the `kube-system namespace`.
+
+2. To **access the Headlamp UI**, generate the authentication `token` and paste it in the Headlamp website when prompted. This is a temporary token that keeps Headlamp authenticated for just an hour.
+
+   ```bash
+   kubectl create token headlamp-admin -n kube-system
+   ```
+
+   For a permanent token, that keeps Headlamp authenticated permanently to the cluster, use the secret token. Get it via:
+
+   ```bash
+   kubectl get secret headlamp-admin -n kube-system -o jsonpath='{.data.token}' | base64 --decode
+   ```
+
+   or
+
+   ```bash
+   # copy from the value string of token key
+   kubectl describe secrets -n kube-system headlamp-admin | grep 'token:'
+   ```

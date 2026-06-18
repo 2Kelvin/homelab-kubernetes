@@ -6,15 +6,15 @@ spec: # deployment specification
   replicas: 4
   selector:
     matchLabels:
-      role: frontend # should match template's metadata label
+      app: website # should match template's metadata label
   template: # instructions on how to create pods
     metadata:
       labels:
-        role: frontend
+        app: website
     spec: # pod specifications
       containers:
-        - name: nginx-container # specific container name in the pod
-          image: rocketman02/mini_react_web:v1.3
+        - name: website-container # specific container name in the pod
+          image: rocketman02/updated-website:v1
           resources: # cpu & ram limits for each container
             requests:
               memory: "128Mi"
@@ -34,7 +34,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    role: frontend # targetting all pods with this label
+    app: website # targetting all pods with this label
   ports:
     - port: 80
       targetPort: 80
