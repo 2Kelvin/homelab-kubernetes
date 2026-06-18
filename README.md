@@ -111,10 +111,21 @@ It's important to **disable swap memory** when running a Kubernetes cluster, but
 
 ---
 
-## K3s Cluster `Load Balancer` Setup (`Nginx`)
+## My Cluster Apps
 
-1. Creating the Load Balancer VM with the necessary compute resources and `Nginx` installed:
+I run all the apps via `YAML configurations` all located in **kubernetes/apps** folder. I run them all at once via:
 
 ```bash
-incus launch images:ubuntu/26.04/cloud load-balancer --vm < incus/k8s-loadbalancer-vm.yaml
+kubectl apply -f kubernetes/apps
 ```
+
+Tearing them all down is as easy as running:
+
+```bash
+kubectl delete -f kubernetes/apps
+```
+
+Here's a list of all the apps I'm currently running in my cluster:
+
+- My personal website
+- Headlamp (K8s UI Dashboard)
