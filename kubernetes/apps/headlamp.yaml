@@ -15,7 +15,7 @@ subjects:
     namespace: kube-system
 roleRef:
   kind: ClusterRole
-  name: cluster-admin # giving headlamp access to ALL resources
+  name: cluster-admin # giving headlamp access to ALL resources in kube-system namespace
   apiGroup: rbac.authorization.k8s.io
 
 ---

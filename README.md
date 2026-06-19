@@ -151,6 +151,6 @@ Here's a list of all the apps I'm currently running in my cluster:
    or
 
    ```bash
-   # copy from the value string of token key
+   # copy the value of the token key
    kubectl describe secrets -n kube-system headlamp-admin | grep 'token:'
    ```
